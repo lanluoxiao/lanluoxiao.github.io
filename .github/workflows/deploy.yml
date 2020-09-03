@@ -8,10 +8,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - run: echo "Host lanluoxiao\nHostName github.com\nUser git\n" > ~/.ssh/config
     - uses: actions/checkout@v2
       with:
-        token: ${{ secrets.PAT }}
         submodules: true
     - uses: actions/cache@v1
       with:
