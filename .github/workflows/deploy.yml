@@ -1,0 +1,28 @@
+name: 部署网站
+
+on:
+  push:
+    branches: src
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      token: ${{ secrets.PAT }}
+      with:
+        submodules: true
+    - uses: actions/cache@v1
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    - if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci
+    - uses: sma11black/hexo-action@v1.0.2
+      with:
+        deploy_key: ${{ secrets.HEXO_DEPLOY_PRIVATE }}
+        user_name: lanluoxiao
+        user_email: 2320693692@qq.com
+        commit_msg: ${{ github.event.head_commit.message }}
